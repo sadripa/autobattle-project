@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://bb4d1q5auehem"]
+
+[ext_resource type="Resource" uid="uid://ecb1lgssltro" path="res://resources/abilities/supports/healer_heal.tres" id="1_g23xq"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="2_mxclg"]
+
+[resource]
+script = ExtResource("2_mxclg")
+id = "healer"
+name = "Healer"
+role = 2
+tier = 1
+hp = 90
+attack = 10
+defense = 10
+speed = 7
+basic_ability = ExtResource("1_g23xq")
+sprite_path = "res://assets/sprites/healer.png"
+portrait_path = "res://assets/portraits/healer.png"
+description = "A healing support"
+tags = Array[String](["support", "healing"])
+custom_properties = {}

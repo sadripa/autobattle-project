@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://bwmwfsuwirbk6"]
+
+[ext_resource type="Resource" uid="uid://bbebnm7f4g73r" path="res://resources/abilities/warriors/warrior_slash.tres" id="1_05wgq"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="2_f7bjp"]
+
+[resource]
+script = ExtResource("2_f7bjp")
+id = "goblin"
+name = "Garblin"
+role = 0
+tier = 0
+hp = 70
+attack = 15
+defense = 8
+speed = 6
+basic_ability = ExtResource("1_05wgq")
+sprite_path = "res://assets/sprites/goblin.png"
+portrait_path = "res://assets/portraits/goblin.png"
+description = "A weak enemy"
+tags = Array[String](["enemy", "humanoid"])
+custom_properties = {}

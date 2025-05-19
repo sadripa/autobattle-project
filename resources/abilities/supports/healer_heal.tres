@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://ecb1lgssltro"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability_data.gd" id="1_6b3aa"]
+
+[resource]
+script = ExtResource("1_6b3aa")
+id = "healer_heal"
+name = "Heal"
+description = "Restores health to an ally"
+ability_type = 0
+action_type = 2
+target_type = 2
+effect_type = 1
+power = 20.0
+cooldown = 0
+icon_path = "res://assets/icons/heal.png"
+effect_animation = "heal"
+custom_params = {
+"flat_heal": 20
+}

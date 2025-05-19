@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://csdp5b74pj7vq"]
+
+[ext_resource type="Script" uid="uid://cj6sy82101nne" path="res://scripts/combat_system.gd" id="1_qajva"]
+[ext_resource type="Script" uid="uid://rfqeflqs4xkl" path="res://scripts/party.gd" id="2_aic3r"]
+[ext_resource type="Script" uid="uid://b1nmvyy2j7sw5" path="res://scripts/ui/combat_ui.gd" id="3_aic3r"]
+
+[node name="Combat" type="Node2D"]
+script = ExtResource("1_qajva")
+
+[node name="PlayerParty" type="Node2D" parent="."]
+script = ExtResource("2_aic3r")
+
+[node name="EnemyParty" type="Node2D" parent="."]
+script = ExtResource("2_aic3r")
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3_aic3r")
+
+[node name="CombatLog" type="RichTextLabel" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -684.0
+offset_top = -305.0
+offset_right = 684.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+theme_override_font_sizes/bold_italics_font_size = 22
+theme_override_font_sizes/italics_font_size = 22
+theme_override_font_sizes/mono_font_size = 22
+theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/bold_font_size = 22
+text = "Combat Log
+
+"
+
+[node name="TurnIndicator" type="Label" parent="UI"]
+offset_left = 63.0
+offset_top = 44.0
+offset_right = 262.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 22
+text = "Awaiting Combat..."
+
+[node name="StateLabel" type="Label" parent="UI"]
+offset_left = 62.0
+offset_top = 94.0
+offset_right = 233.0
+offset_bottom = 125.0
+theme_override_font_sizes/font_size = 22
+text = "State: Preparing"

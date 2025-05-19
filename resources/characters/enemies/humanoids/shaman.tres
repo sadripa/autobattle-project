@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://0k4wy21nm6y5"]
+
+[ext_resource type="Resource" uid="uid://bt1l5q3erta0f" path="res://resources/abilities/supports/shaman_heal.tres" id="1_gku8a"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="2_wvv6r"]
+
+[resource]
+script = ExtResource("2_wvv6r")
+id = "shaman"
+name = "Shaman"
+role = 2
+tier = 1
+hp = 60
+attack = 10
+defense = 10
+speed = 5
+basic_ability = ExtResource("1_gku8a")
+sprite_path = "res://assets/sprites/shaman.png"
+portrait_path = "res://assets/portraits/shaman.png"
+description = "A weird healer"
+tags = Array[String](["enemy", "humanoid"])
+custom_properties = {}

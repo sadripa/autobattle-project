@@ -171,17 +171,21 @@ func get_random_character() -> Character:
 
 func get_lowest_health_character() -> Character:
 	"""
-	Get the lowest health character
-	based on on max health
-	from all living character
+	Get the character with lowest health percentage from all living characters
 	"""
 	var living = get_living_characters()
 	if living.size() > 0:
 		var target = living[0]
+		var lowest_percentage = target.health.get_health_percentage()
+		
 		for c in living:
-			if c.max_hp - c.current_hp > target.max_hp - target.current_hp: target = c
-		if target.max_hp - target.current_hp != 0:
-			return target
+			var current_percentage = c.health.get_health_percentage()
+			if current_percentage < lowest_percentage:
+				lowest_percentage = current_percentage
+				target = c
+				
+		# Return a target even if at full health
+		return target
 	return null
 
 func get_character_at_position(pos: int) -> Character:

@@ -133,6 +133,7 @@ func target_type_to_string(target_type_enum: int) -> String:
 		TargetType.ALL_ENEMIES: return "all_enemies"
 		TargetType.SINGLE_ALLY: return "single_ally"
 		TargetType.ALL_ALLIES: return "all_allies"
+		TargetType.LOWEST_ALLY: return "lowest_ally"
 		TargetType.SELF: return "self"
 		TargetType.POSITION_BASED: return "position_based"
 		_: return "unknown"

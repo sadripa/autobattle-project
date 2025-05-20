@@ -98,6 +98,7 @@ func get_targets(character, combat_state) -> Array:
 		
 		GameEnums.TargetType.LOWEST_ALLY:
 			var target = null
+			# Only search within character's own party
 			target = user_party.get_lowest_health_character()
 			if target:
 				targets.append(target)

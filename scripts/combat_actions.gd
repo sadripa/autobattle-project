@@ -124,6 +124,7 @@ static func execute_support(character, targets: Array, ability: Ability, result:
 	"""
 	Execute a support ability (healing, buffing)
 	"""
+	
 	match ability.effect_type:
 		GameEnums.EffectType.HEAL:
 			for target in targets:

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://d1ahmod4iv6q0"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability_data.gd" id="1_sjj1g"]
+
+[resource]
+script = ExtResource("1_sjj1g")
+id = "shaman_heal"
+name = "Shaman Heal"
+description = "Restores health to an ally."
+ability_type = 0
+action_type = 2
+target_type = 3
+effect_type = 1
+power = 0.3
+cooldown = 2
+icon_path = ""
+effect_animation = "support"
+custom_params = {
+"duration": ""
+}

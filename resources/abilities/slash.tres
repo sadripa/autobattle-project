@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://btx0bkkrpgv4y"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability_data.gd" id="1_bo7ia"]
+
+[resource]
+script = ExtResource("1_bo7ia")
+id = "slash"
+name = "Slash"
+description = "A basic attack that deals damage."
+ability_type = 0
+action_type = 0
+target_type = 0
+effect_type = 0
+power = 1.2
+cooldown = 0
+icon_path = ""
+effect_animation = "basic_attacks"
+custom_params = {
+"duration": ""
+}

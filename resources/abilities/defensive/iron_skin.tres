@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://36kdiym545dt"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability_data.gd" id="1_pe7ns"]
+
+[resource]
+script = ExtResource("1_pe7ns")
+id = "iron_skin"
+name = "Iron Skin"
+description = "Hardens the skin to create armor."
+ability_type = 2
+action_type = 1
+target_type = 5
+effect_type = 2
+power = 1.2
+cooldown = 3
+icon_path = "res://assets/icons/iron_skin.png"
+effect_animation = ""
+custom_params = {
+"apply_armor": true,
+"duration": ""
+}

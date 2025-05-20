@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="HealthType" load_steps=2 format=3 uid="uid://c5oxuf7upbr5u"]
+
+[ext_resource type="Script" uid="uid://bbg1chdq6vfyy" path="res://scripts/health/health_type.gd" id="1_6d7j6"]
+
+[resource]
+script = ExtResource("1_6d7j6")
+type = 0
+color = Color(0.93, 0.93, 0.93, 1)
+name = "Regular Health"
+description = "Basic health with no special effects"
+damage_reduction_percent = 0.0
+regen_per_turn = 0
+decay_per_turn = 0
+max_amount = 100
+decay_delay = 0

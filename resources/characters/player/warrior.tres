@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://7bqrjvrxrcrw"]
+
+[ext_resource type="Resource" uid="uid://btx0bkkrpgv4y" path="res://resources/abilities/slash.tres" id="1_h1xq0"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="1_hl0rl"]
+
+[resource]
+script = ExtResource("1_hl0rl")
+id = "warrior"
+name = "Warrior"
+description = "A powerful warrior who specializes in direct attacks."
+role = 0
+tier = 0
+hp = 100
+attack = 15
+defense = 10
+speed = 5
+armor = 0
+shield = 0
+overhealth = 0
+basic_ability = ExtResource("1_h1xq0")
+tags = Array[String](["melee", "dps"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/warrior.png"
+portrait_path = "res://assets/portraits/warrior.png"

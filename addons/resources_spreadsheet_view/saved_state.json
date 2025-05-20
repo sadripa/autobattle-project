@@ -27,11 +27,23 @@
       "resource_name": {
         "visibility": 0.0
       }
+    },
+    "res://resources/health_types/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
     }
   },
   "recent_paths": [
     "res://resources/characters/",
-    "res://resources/abilities/"
+    "res://resources/abilities/",
+    "res://resources/health_types/"
   ],
   "table_functions": {
     "filter": [

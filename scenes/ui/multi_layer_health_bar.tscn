@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://deqse0tahulj6"]
+
+[ext_resource type="Script" uid="uid://cdl1kt576ahth" path="res://scripts/ui/multi_layer_health_bar.gd" id="1_rdfb4"]
+
+[node name="MultiLayerHealthBar" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_rdfb4")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 0.5)

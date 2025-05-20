@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="HealthType" load_steps=2 format=3 uid="uid://v8idb08edn3k"]
+
+[ext_resource type="Script" uid="uid://bbg1chdq6vfyy" path="res://scripts/health/health_type.gd" id="1_mskkw"]
+
+[resource]
+script = ExtResource("1_mskkw")
+type = 3
+color = Color(0.4, 1, 0.4, 1)
+name = "Overhealth"
+description = "Temporary health that decays by 10 points after 2 turns"
+damage_reduction_percent = 0.0
+regen_per_turn = 0
+decay_per_turn = 10
+max_amount = 100
+decay_delay = 2

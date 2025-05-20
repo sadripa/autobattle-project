@@ -157,6 +157,14 @@ func create_or_update_ability(data: Dictionary):
 			
 			custom_params[param_name] = value
 	
+	# Check for health system related parameters
+	if data.has("apply_armor") and data.apply_armor.to_lower() == "true":
+		custom_params["apply_armor"] = true
+	if data.has("apply_shield") and data.apply_shield.to_lower() == "true":
+		custom_params["apply_shield"] = true
+	if data.has("apply_overhealth") and data.apply_overhealth.to_lower() == "true":
+		custom_params["apply_overhealth"] = true
+	
 	ability.custom_params = custom_params
 	
 	# Save the resource
@@ -258,6 +266,14 @@ func create_or_update_character(data: Dictionary):
 		character.defense = int(data.defense)
 	if data.has("speed"):
 		character.speed = int(data.speed)
+	
+	# Health layers - new properties
+	if data.has("armor"):
+		character.armor = int(data.armor)
+	if data.has("shield"):
+		character.shield = int(data.shield)
+	if data.has("overhealth"):
+		character.overhealth = int(data.overhealth)
 	
 	# Visual properties
 	if data.has("sprite_path"):

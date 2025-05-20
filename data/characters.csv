@@ -1,0 +1,10 @@
+id,name,role,tier,hp,armor,shield,overhealth,attack,defense,speed,basic_ability_id,passive_ability_id,active_ability_id,sprite_path,portrait_path,description,folder,tags
+warrior,Warrior,Blade,Common Adventurer,100,0,0,0,15,10,5,slash,,,res://assets/sprites/warrior.png,res://assets/portraits/warrior.png,A powerful warrior who specializes in direct attacks.,player,melee;dps
+guardian,Guardian,Banner,Recurring Resource,80,50,0,0,8,18,3,protect,,,res://assets/sprites/guardian.png,res://assets/portraits/guardian.png,A stalwart defender with strong armor.,player,tank;melee
+healer,Healer,Echo,Recurring Resource,70,0,0,0,5,7,6,heal,,,res://assets/sprites/healer.png,res://assets/portraits/healer.png,A supportive character who can heal allies.,player,support;healer
+mage,Mage,Echo,Lost Seal,60,0,40,0,20,5,7,arcane_blast,,,res://assets/sprites/mage.png,res://assets/portraits/mage.png,A powerful spellcaster with regenerating shields.,player,ranged;dps;magic
+paladin,Paladin,Bond,Silent Core,70,30,30,0,12,15,4,divine_protection,,,res://assets/sprites/paladin.png,res://assets/portraits/paladin.png,A holy warrior with both armor and shields.,player,tank;support;hybrid
+ranger,Ranger,Blade,Recurring Resource,85,0,0,0,17,8,9,quick_shot,,,res://assets/sprites/ranger.png,res://assets/portraits/ranger.png,A nimble archer with high speed.,player,ranged;dps
+orc,Orc,Blade,Common Adventurer,90,20,0,0,13,8,4,smash,,,res://assets/sprites/orc.png,res://assets/portraits/orc.png,A brutish enemy with natural armor.,enemy,melee;dps
+goblin,Goblin,Fracture,Common Adventurer,50,0,0,0,8,4,8,stab,,,res://assets/sprites/goblin.png,res://assets/portraits/goblin.png,A weak but agile enemy.,enemy,melee;dps
+shaman,Shaman,Echo,Lost Seal,60,0,15,0,12,6,5,hex,,,res://assets/sprites/shaman.png,res://assets/portraits/shaman.png,A magical enemy with protective shields.,enemy,ranged;support;magic

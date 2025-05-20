@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://ddechliqd8xqr"]
+
+[ext_resource type="Resource" uid="uid://bxjti85eiul0q" path="res://resources/abilities/divine_protection.tres" id="1_1p082"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="1_dq476"]
+
+[resource]
+script = ExtResource("1_dq476")
+id = "paladin"
+name = "Paladin"
+description = "A holy warrior with both armor and shields."
+role = 4
+tier = 3
+hp = 70
+attack = 12
+defense = 15
+speed = 4
+armor = 30
+shield = 30
+overhealth = 0
+basic_ability = ExtResource("1_1p082")
+tags = Array[String](["tank", "support", "hybrid"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/paladin.png"
+portrait_path = "res://assets/portraits/paladin.png"

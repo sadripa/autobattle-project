@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://cfbmcixfba4eq"]
+
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="1_k7ypq"]
+[ext_resource type="Resource" uid="uid://dahb55naocof" path="res://resources/abilities/protect.tres" id="1_rlmd5"]
+
+[resource]
+script = ExtResource("1_k7ypq")
+id = "guardian"
+name = "Guardian"
+description = "A stalwart defender with strong armor."
+role = 1
+tier = 1
+hp = 50
+attack = 8
+defense = 12
+speed = 3
+armor = 30
+shield = 0
+overhealth = 0
+basic_ability = ExtResource("1_rlmd5")
+tags = Array[String](["tank", "melee"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/guardian.png"
+portrait_path = "res://assets/portraits/guardian.png"

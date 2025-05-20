@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://dlfr4sxgw0m13"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability_data.gd" id="1_86kba"]
+
+[resource]
+script = ExtResource("1_86kba")
+id = "arcane_barrier"
+name = "Arcane Barrier"
+description = "Creates a regenerating shield."
+ability_type = 2
+action_type = 1
+target_type = 2
+effect_type = 2
+power = 1.0
+cooldown = 3
+icon_path = ""
+effect_animation = "defensive"
+custom_params = {
+"apply_shield": true,
+"duration": ""
+}

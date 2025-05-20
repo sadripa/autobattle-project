@@ -106,7 +106,7 @@ func start_next_turn():
 	var current_character = turn_order[current_turn_index]
 	
 	# Skip invalid or dead characters
-	if current_character == null or !is_instance_valid(current_character) or current_character.current_hp <= 0:
+	if current_character == null or !is_instance_valid(current_character) or current_character.health.is_dead():
 		# Remove invalid character from turn order
 		turn_order.remove_at(current_turn_index)
 		
@@ -122,9 +122,8 @@ func start_next_turn():
 	# Process status effects
 	current_character.process_status_effects()
 	
-	# Process ability cooldowns
-	if current_character.abilities.active:
-		current_character.abilities.active.process_cooldown()
+	# Process health system turn effects (regeneration, decay, etc.)
+	current_character.health.process_turn()
 	
 	# Execute character's turn (with a slight delay for readability)
 	await get_tree().create_timer(0.5).timeout
@@ -156,6 +155,12 @@ func execute_character_turn(character: Character):
 					emit_signal("combat_log_message", "    Critical hit!")
 			elif effect.type == "heal":
 				emit_signal("combat_log_message", "  → " + effect.target.char_name + " heals for " + str(effect.value))
+			elif effect.type == "armor":
+				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gains " + str(effect.value) + " armor")
+			elif effect.type == "shield":
+				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gains " + str(effect.value) + " shield")
+			elif effect.type == "overhealth":
+				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gains " + str(effect.value) + " overhealth")
 			elif effect.type == "buff" or effect.type == "debuff":
 				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gained " + effect.buff_id + " for " + str(effect.duration) + " turns")
 	
@@ -223,3 +228,19 @@ func _on_player_party_defeated():
 
 func _on_enemy_party_defeated():
 	change_combat_state(CombatState.VICTORY)
+
+# New helper method to handle health-specific effects
+func apply_health_effect(target: Character, effect_type: String, amount: int) -> void:
+	"""
+	Apply a health-related effect (armor, shield, overhealth) to a target
+	"""
+	match effect_type:
+		"armor":
+			target.add_armor(amount)
+			emit_signal("combat_log_message", target.char_name + " gains " + str(amount) + " armor")
+		"shield":
+			target.add_shield(amount)
+			emit_signal("combat_log_message", target.char_name + " gains " + str(amount) + " shield")
+		"overhealth":
+			target.add_overhealth(amount)
+			emit_signal("combat_log_message", target.char_name + " gains " + str(amount) + " overhealth")

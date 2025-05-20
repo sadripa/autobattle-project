@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://dy2gyoh8og0hu"]
+
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="1_184tm"]
+[ext_resource type="Resource" uid="uid://do368141artyl" path="res://resources/abilities/heal.tres" id="1_uj4jh"]
+
+[resource]
+script = ExtResource("1_184tm")
+id = "shaman"
+name = "Shaman"
+description = "A magical enemy with protective shields."
+role = 2
+tier = 2
+hp = 60
+attack = 12
+defense = 6
+speed = 5
+armor = 0
+shield = 15
+overhealth = 0
+basic_ability = ExtResource("1_uj4jh")
+tags = Array[String](["ranged", "support", "magic"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/shaman.png"
+portrait_path = "res://assets/portraits/shaman.png"

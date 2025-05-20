@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://opohx04viu4t"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability_data.gd" id="1_oylhl"]
+
+[resource]
+script = ExtResource("1_oylhl")
+id = "quick_shot"
+name = "Quick Shot"
+description = "A swift attack that deals damage."
+ability_type = 0
+action_type = 0
+target_type = 0
+effect_type = 0
+power = 1.0
+cooldown = 0
+icon_path = ""
+effect_animation = "basic_attacks"
+custom_params = {
+"duration": ""
+}

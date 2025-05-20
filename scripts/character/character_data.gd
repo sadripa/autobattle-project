@@ -1,4 +1,3 @@
-# character_data.gd
 @tool
 class_name CharacterData
 extends Resource
@@ -15,6 +14,11 @@ extends Resource
 @export var attack: int = 10
 @export var defense: int = 10
 @export var speed: int = 5
+
+# Health layers - new properties for multi-layered health
+@export var armor: int = 0
+@export var shield: int = 0
+@export var overhealth: int = 0
 
 # Abilities
 @export var basic_ability: AbilityData
@@ -65,6 +69,14 @@ func to_dictionary() -> Dictionary:
 		"portrait_path": portrait_path,
 		"description": description
 	}
+	
+	# Add health layer information
+	if armor > 0:
+		data["armor"] = armor
+	if shield > 0:
+		data["shield"] = shield
+	if overhealth > 0:
+		data["overhealth"] = overhealth
 	
 	# Add any custom properties
 	for key in custom_properties:

@@ -35,62 +35,88 @@ static func execute_defend(character, targets: Array, ability: Ability, result: 
 	"""
 	
 	for target in targets:
-		# Apply defensive buff
-		var defense_boost = int(character.defense * ability.power)
-		
-		# Get duration from custom params or use default
-		var duration = 2  # Default duration in turns
-		if ability.custom_params.has("duration"):
-			duration = ability.custom_params.duration
-		
-		# Determine the buff ID and name
-		var buff_id = "defense_up"
-		var buff_name = "Defense Up"
-		
-		# Check for specific buff types in custom params
-		if ability.custom_params.has("defense_boost") and ability.custom_params.defense_boost:
-			buff_id = "defense_up"
-			buff_name = "Defense Up"
-		elif ability.custom_params.has("attack_boost") and ability.custom_params.attack_boost:
-			buff_id = "attack_up"
-			buff_name = "Attack Up"
-			defense_boost = int(character.attack * ability.power)  # Use attack instead of defense
-		elif ability.custom_params.has("speed_boost") and ability.custom_params.speed_boost:
-			buff_id = "speed_up"
-			buff_name = "Speed Up"
-			defense_boost = int(character.speed * ability.power)  # Use speed instead of defense
-		
-		# Create appropriate stat mods
-		var stat_mods = {}
-		if buff_id == "defense_up":
-			stat_mods = {"defense": defense_boost}
-		elif buff_id == "attack_up":
-			stat_mods = {"attack": defense_boost}
-		elif buff_id == "speed_up":
-			stat_mods = {"speed": defense_boost}
-		
-		# Create a buff status effect
-		var buff = StatusEffect.new()
-		buff.initialize({
-			"id": buff_id,
-			"name": buff_name,
-			"duration": duration,
-			"stat_mods": stat_mods,
-			"source": character
-		})
-		
-		# Add buff to target
-		target.add_status_effect(buff)
-		
-		# Record effect
-		var effect = {
-			"type": "buff",
-			"target": target,
-			"buff_id": buff_id,
-			"value": defense_boost,
-			"duration": duration
-		}
-		result.effects.append(effect)
+		# Determine the effect type from custom params
+		if ability.custom_params.has("apply_armor") and ability.custom_params.apply_armor:
+			# Apply armor
+			var armor_amount = int(character.defense * ability.power)
+			target.add_armor(armor_amount)
+			
+			# Record effect
+			var effect = {
+				"type": "armor",
+				"target": target,
+				"value": armor_amount
+			}
+			result.effects.append(effect)
+		elif ability.custom_params.has("apply_shield") and ability.custom_params.apply_shield:
+			# Apply shield
+			var shield_amount = int(character.defense * ability.power)
+			target.add_shield(shield_amount)
+			
+			# Record effect
+			var effect = {
+				"type": "shield",
+				"target": target,
+				"value": shield_amount
+			}
+			result.effects.append(effect)
+		else:
+			# Apply defensive buff (legacy behavior)
+			var defense_boost = int(character.defense * ability.power)
+			
+			# Get duration from custom params or use default
+			var duration = 2  # Default duration in turns
+			if ability.custom_params.has("duration"):
+				duration = ability.custom_params.duration
+			
+			# Determine the buff ID and name
+			var buff_id = "defense_up"
+			var buff_name = "Defense Up"
+			
+			# Check for specific buff types in custom params
+			if ability.custom_params.has("defense_boost") and ability.custom_params.defense_boost:
+				buff_id = "defense_up"
+				buff_name = "Defense Up"
+			elif ability.custom_params.has("attack_boost") and ability.custom_params.attack_boost:
+				buff_id = "attack_up"
+				buff_name = "Attack Up"
+				defense_boost = int(character.attack * ability.power)  # Use attack instead of defense
+			elif ability.custom_params.has("speed_boost") and ability.custom_params.speed_boost:
+				buff_id = "speed_up"
+				buff_name = "Speed Up"
+				defense_boost = int(character.speed * ability.power)  # Use speed instead of defense
+			
+			# Create appropriate stat mods
+			var stat_mods = {}
+			if buff_id == "defense_up":
+				stat_mods = {"defense": defense_boost}
+			elif buff_id == "attack_up":
+				stat_mods = {"attack": defense_boost}
+			elif buff_id == "speed_up":
+				stat_mods = {"speed": defense_boost}
+			
+			# Create a buff status effect
+			var buff = StatusEffect.new()
+			buff.initialize({
+				"id": buff_id,
+				"name": buff_name,
+				"duration": duration,
+				"stat_mods": stat_mods,
+				"source": character
+			})
+			
+			# Add buff to target
+			target.add_status_effect(buff)
+			
+			# Record effect
+			var effect = {
+				"type": "buff",
+				"target": target,
+				"buff_id": buff_id,
+				"value": defense_boost,
+				"duration": duration
+			}
+			result.effects.append(effect)
 	
 	return result
 
@@ -111,16 +137,28 @@ static func execute_support(character, targets: Array, ability: Ability, result:
 					# Base healing on a percentage of max HP
 					heal_amount = int(target.max_hp * ability.power * 0.2)
 				
-				# Apply healing
-				var actual_heal = target.heal(heal_amount)
-				
-				# Record effect
-				var effect = {
-					"type": "heal",
-					"target": target,
-					"value": actual_heal
-				}
-				result.effects.append(effect)
+				# Check for special health types
+				if ability.custom_params.has("apply_overhealth") and ability.custom_params.apply_overhealth:
+					target.add_overhealth(heal_amount)
+					
+					# Record effect
+					var effect = {
+						"type": "overhealth",
+						"target": target,
+						"value": heal_amount
+					}
+					result.effects.append(effect)
+				else:
+					# Apply regular healing
+					var actual_heal = target.heal(heal_amount)
+					
+					# Record effect
+					var effect = {
+						"type": "heal",
+						"target": target,
+						"value": actual_heal
+					}
+					result.effects.append(effect)
 				
 		GameEnums.EffectType.BUFF:
 			for target in targets:

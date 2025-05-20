@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://cvnti6lx4g35g"]
+
+[ext_resource type="Resource" uid="uid://opohx04viu4t" path="res://resources/abilities/quick_shot.tres" id="1_03h4a"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="1_5pena"]
+
+[resource]
+script = ExtResource("1_5pena")
+id = "ranger"
+name = "Ranger"
+description = "A nimble archer with high speed."
+role = 0
+tier = 1
+hp = 85
+attack = 17
+defense = 8
+speed = 9
+armor = 0
+shield = 0
+overhealth = 0
+basic_ability = ExtResource("1_03h4a")
+tags = Array[String](["ranged", "dps"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/ranger.png"
+portrait_path = "res://assets/portraits/ranger.png"

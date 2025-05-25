@@ -136,7 +136,7 @@ static func execute_support(character, targets: Array, ability: Ability, result:
 					heal_amount = ability.custom_params.flat_heal
 				else:
 					# Base healing on a percentage of max HP
-					heal_amount = int(target.max_hp * ability.power * 0.2)
+					heal_amount = int(target.max_hp * ability.power * 0.5)
 				
 				# Check for special health types
 				if ability.custom_params.has("apply_overhealth") and ability.custom_params.apply_overhealth:

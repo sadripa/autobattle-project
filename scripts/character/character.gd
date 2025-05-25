@@ -242,7 +242,7 @@ func heal(amount: int) -> int:
 	Heal character and return actual amount healed
 	"""
 	
-	var actual_heal = health.heal(amount)
+	var actual_heal = health.heal_any_layer(amount)
 	
 	# Update current_hp for backward compatibility
 	current_hp = health.get_total_health()

@@ -142,6 +142,29 @@ func heal(amount: int, target_layer_index: int = 0) -> int:
 
 	return actual_healing
 
+func heal_any_layer(amount: int) -> int:
+	"""
+	Heals layers from bottom to top, filling each before moving up
+	"""
+	var remaining_heal = amount
+	var total_healed = 0
+	
+	# Start from base health and work up
+	for i in range(layers.size()):
+		if remaining_heal <= 0:
+			break
+			
+		var layer = layers[i]
+		var before = layer.current_amount
+		remaining_heal = layer.apply_healing(remaining_heal)
+		var healed = layer.current_amount - before
+		
+		if healed > 0:
+			total_healed += healed
+			emit_signal("health_changed", i, layer.current_amount, layer.max_amount)
+	
+	return total_healed
+
 func add_armor(amount: int, damage_reduction: float = 0.5) -> void:
 	"""
 	Add armor layer

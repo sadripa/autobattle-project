@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://d1wn5atbwkdv2"]
+
+[ext_resource type="Resource" uid="uid://57ix0531ksqb" path="res://resources/abilities/hex.tres" id="1_8ouiy"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="2_uvts0"]
+
+[resource]
+script = ExtResource("2_uvts0")
+id = "dark_mage"
+name = "Dark Mage"
+description = "A sinister spellcaster who bends reality."
+role = 3
+tier = 2
+hp = 70
+attack = 19
+defense = 7
+speed = 5
+armor = 0
+shield = 30
+overhealth = 0
+basic_ability = ExtResource("1_8ouiy")
+tags = Array[String](["ranged", "magic", "debuff"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/dark_mage.png"
+portrait_path = "res://assets/portraits/dark_mage.png"

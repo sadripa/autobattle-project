@@ -153,29 +153,95 @@ func initialize(character_data: Dictionary):
 		if character_data.abilities.has("basic"):
 			var ability_data = character_data.abilities.basic
 			var ability = Ability.new()
-			ability.id = ability_data.id
-			ability.name = ability_data.name
-			ability.description = ability_data.get("description", "")
-			ability.ability_type = GameEnums.AbilityType.BASIC
-			ability.action_type = GameEnums.string_to_action_type(ability_data.type)
-			ability.target_type = GameEnums.string_to_target_type(ability_data.target)
-			ability.effect_type = GameEnums.string_to_effect_type(ability_data.effect)
-			ability.power = ability_data.power
-			ability.cooldown = ability_data.cooldown
-			# Set custom params if any
-			if ability_data.has("custom_params"):
-				ability.custom_params = ability_data.custom_params.duplicate()
+			
+			# If ability_data is an AbilityData resource, use it directly
+			if ability_data is AbilityData:
+				ability.initialize_from_data(ability_data)
+			else:
+				# Legacy dictionary format
+				ability.id = ability_data.id
+				ability.name = ability_data.name
+				ability.description = ability_data.get("description", "")
+				ability.ability_type = GameEnums.AbilityType.BASIC
+				ability.action_type = GameEnums.string_to_action_type(ability_data.type)
+				ability.effect_type = GameEnums.string_to_effect_type(ability_data.effect)
+				ability.power = ability_data.power
+				ability.cooldown = ability_data.cooldown
+				
+				# Set default targeting for legacy abilities based on action type
+				if ability.action_type == GameEnums.ActionType.ATTACK:
+					ability.target_side = GameEnums.TargetSide.ENEMIES
+					ability.target_range = GameEnums.TargetRange.CLOSE
+					ability.target_size = GameEnums.TargetSize.SINGLE
+				elif ability.action_type == GameEnums.ActionType.SUPPORT:
+					ability.target_side = GameEnums.TargetSide.ALLIES
+					ability.target_range = GameEnums.TargetRange.CLOSE
+					ability.target_size = GameEnums.TargetSize.SINGLE
+					if ability.effect_type == GameEnums.EffectType.HEAL:
+						ability.target_filter = GameEnums.TargetFilter.LOWEST_HP
+				elif ability.action_type == GameEnums.ActionType.DEFEND:
+					ability.target_side = GameEnums.TargetSide.ALLIES
+					ability.target_range = GameEnums.TargetRange.SELF
+					ability.target_size = GameEnums.TargetSize.SINGLE
+				
+				# Set custom params if any
+				if ability_data.has("custom_params"):
+					ability.custom_params = ability_data.custom_params.duplicate()
 			
 			abilities.basic = ability
 		
-		# Similar initialization for passive and active abilities
+		# Similar initialization for passive abilities
 		if character_data.abilities.has("passive"):
-			# Initialize passive ability
-			pass
+			var ability_data = character_data.abilities.passive
+			var ability = Ability.new()
 			
+			if ability_data is AbilityData:
+				ability.initialize_from_data(ability_data)
+			else:
+				# Legacy format handling
+				ability.id = ability_data.id
+				ability.name = ability_data.name
+				ability.ability_type = GameEnums.AbilityType.PASSIVE
+				ability.action_type = GameEnums.string_to_action_type(ability_data.type)
+				ability.effect_type = GameEnums.string_to_effect_type(ability_data.effect)
+				ability.power = ability_data.power
+				ability.cooldown = ability_data.cooldown
+				
+				# Set appropriate targeting
+				ability.target_side = GameEnums.TargetSide.ALLIES
+				ability.target_range = GameEnums.TargetRange.SELF
+				ability.target_size = GameEnums.TargetSize.SINGLE
+			
+			abilities.passive = ability
+			
+		# Similar initialization for active abilities
 		if character_data.abilities.has("active"):
-			# Initialize active ability
-			pass
+			var ability_data = character_data.abilities.active
+			var ability = Ability.new()
+			
+			if ability_data is AbilityData:
+				ability.initialize_from_data(ability_data)
+			else:
+				# Legacy format handling
+				ability.id = ability_data.id
+				ability.name = ability_data.name
+				ability.ability_type = GameEnums.AbilityType.ACTIVE
+				ability.action_type = GameEnums.string_to_action_type(ability_data.type)
+				ability.effect_type = GameEnums.string_to_effect_type(ability_data.effect)
+				ability.power = ability_data.power
+				ability.cooldown = ability_data.cooldown
+				
+				# Set targeting based on type
+				if ability.action_type == GameEnums.ActionType.ATTACK:
+					ability.target_side = GameEnums.TargetSide.ENEMIES
+					ability.target_range = GameEnums.TargetRange.CLOSE
+					ability.target_size = GameEnums.TargetSize.ALL
+				else:
+					ability.target_side = GameEnums.TargetSide.ALLIES
+					ability.target_range = GameEnums.TargetRange.CLOSE
+					ability.target_size = GameEnums.TargetSize.ALL
+			
+			abilities.active = ability
 	else:
 		# Backward compatibility with old data format
 		# Create a basic ability from the single ability entry
@@ -183,13 +249,7 @@ func initialize(character_data: Dictionary):
 		var ability = Ability.new()
 		ability.id = char_name.to_lower() + "_basic"
 		ability.name = ability_data.name
-		ability.ability_type = GameEnums.AbilityType.BASIC
-		ability.action_type = GameEnums.string_to_action_type(ability_data.type)
-		ability.target_type = GameEnums.string_to_target_type(ability_data.target)
-		ability.effect_type = GameEnums.string_to_effect_type(ability_data.effect)
-		ability.power = ability_data.power
-		
-		abilities.basic = ability
+		ability.ability_type = GameEnums.Ab
 	
 	# Update visuals
 	update_health_display()
@@ -328,8 +388,8 @@ func use_ability(ability_type: int, combat_state) -> Dictionary:
 		# Get targets
 		var targets = ability.get_targets(self, combat_state)
 		
-		# Execute ability
-		var result = ability.execute(self, targets, combat_state)
+		# Execute ability (now async)
+		var result = await ability.execute(self, targets, combat_state)
 		
 		# Emit signal
 		emit_signal("ability_used", ability, targets, result)

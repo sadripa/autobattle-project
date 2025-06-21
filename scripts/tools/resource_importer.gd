@@ -117,13 +117,34 @@ func create_or_update_ability(data: Dictionary):
 		var action_type_str = data.action_type.to_lower()
 		ability.action_type = GameEnums.string_to_action_type(action_type_str)
 	
-	if data.has("target_type"):
-		var target_type_str = data.target_type.to_lower().replace(" ", "_")
-		ability.target_type = GameEnums.string_to_target_type(target_type_str)
-	
 	if data.has("effect_type"):
 		var effect_type_str = data.effect_type.to_lower()
 		ability.effect_type = GameEnums.string_to_effect_type(effect_type_str)
+	
+	# NEW: Targeting properties
+	if data.has("target_side"):
+		ability.target_side = GameEnums.string_to_target_side(data.target_side)
+	
+	if data.has("target_range"):
+		ability.target_range = GameEnums.string_to_target_range(data.target_range)
+	
+	if data.has("target_section"):
+		ability.target_section = GameEnums.string_to_target_section(data.target_section)
+	
+	if data.has("target_size"):
+		ability.target_size = GameEnums.string_to_target_size(data.target_size)
+	
+	if data.has("target_filter"):
+		ability.target_filter = GameEnums.string_to_target_filter(data.target_filter)
+	
+	if data.has("target_priority"):
+		ability.target_priority = GameEnums.string_to_target_priority(data.target_priority)
+	
+	if data.has("fallback"):
+		ability.fallback = GameEnums.string_to_fallback(data.fallback)
+	
+	if data.has("penetration"):
+		ability.penetration = GameEnums.string_to_penetration(data.penetration)
 	
 	# Numeric properties
 	if data.has("power"):
@@ -165,7 +186,24 @@ func create_or_update_ability(data: Dictionary):
 	if data.has("apply_overhealth") and data.apply_overhealth.to_lower() == "true":
 		custom_params["apply_overhealth"] = true
 	
+	# Add specific role filters if needed
+	if ability.target_filter == GameEnums.TargetFilter.HAS_ROLE:
+		if data.has("filter_role"):
+			custom_params["filter_role"] = GameEnums.string_to_role(data.filter_role)
+	
+	# Handle buff/debuff specific params
+	if data.has("attack_boost") and data.attack_boost.to_lower() == "true":
+		custom_params["attack_boost"] = true
+	if data.has("defense_boost") and data.defense_boost.to_lower() == "true":
+		custom_params["defense_boost"] = true
+	if data.has("speed_boost") and data.speed_boost.to_lower() == "true":
+		custom_params["speed_boost"] = true
+	
 	ability.custom_params = custom_params
+	
+	# Validate the targeting combination
+	if not ability.validate_targeting():
+		print("  Warning: Invalid targeting combination for ability: " + ability_id)
 	
 	# Save the resource
 	var result = ResourceSaver.save(ability, file_path)

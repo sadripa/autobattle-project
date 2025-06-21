@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3 uid="uid://wnlhlcaan3a5"]
+
+[ext_resource type="Resource" uid="uid://dick3iprl1wob" path="res://resources/abilities/buff/rally.tres" id="1_wv205"]
+[ext_resource type="Resource" uid="uid://dwtj1cy3ntqbc" path="res://resources/abilities/smash.tres" id="2_gxb87"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="3_61he5"]
+
+[resource]
+script = ExtResource("3_61he5")
+id = "orc_chieftain"
+name = "Orc Chieftain"
+description = "A mighty leader who inspires his troops."
+role = 1
+tier = 3
+hp = 150
+attack = 16
+defense = 14
+speed = 3
+armor = 40
+shield = 0
+overhealth = 0
+basic_ability = ExtResource("2_gxb87")
+active_ability = ExtResource("1_wv205")
+tags = Array[String](["melee", "tank", "leader"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/orc_chieftain.png"
+portrait_path = "res://assets/portraits/orc_chieftain.png"

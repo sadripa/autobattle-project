@@ -108,7 +108,7 @@ static func execute_defend(character, targets: Array, ability: Ability, result: 
 			# Add buff to target
 			target.add_status_effect(buff)
 			
-			# Record effect
+			# Record effect - ensure consistency with combat log expectations
 			var effect = {
 				"type": "buff",
 				"target": target,
@@ -166,36 +166,56 @@ static func execute_support(character, targets: Array, ability: Ability, result:
 				# Apply appropriate buff based on ability
 				var buff = StatusEffect.new()
 				var duration = ability.custom_params.get("duration", 2)
+				var buff_id = "generic_buff"
+				var buff_name = "Buff"
+				var stat_value = 0
 				
-				if ability.custom_params.has("attack_boost"):
+				if ability.custom_params.has("attack_boost") and ability.custom_params.attack_boost:
 					# Attack buff
-					var boost = int(target.attack * ability.power)
+					buff_id = "attack_up"
+					buff_name = "Attack Up"
+					stat_value = int(target.attack * ability.power)
 					buff.initialize({
-						"id": "attack_up",
-						"name": "Attack Up",
+						"id": buff_id,
+						"name": buff_name,
 						"duration": duration,
-						"stat_mods": {"attack": boost},
+						"stat_mods": {"attack": stat_value},
 						"source": character
 					})
-				elif ability.custom_params.has("speed_boost"):
+				elif ability.custom_params.has("speed_boost") and ability.custom_params.speed_boost:
 					# Speed buff
-					var boost = int(target.speed * ability.power)
+					buff_id = "speed_up"
+					buff_name = "Speed Up"
+					stat_value = int(target.speed * ability.power)
 					buff.initialize({
-						"id": "speed_up",
-						"name": "Speed Up",
+						"id": buff_id,
+						"name": buff_name,
 						"duration": duration,
-						"stat_mods": {"speed": boost},
+						"stat_mods": {"speed": stat_value},
+						"source": character
+					})
+				elif ability.custom_params.has("defense_boost") and ability.custom_params.defense_boost:
+					# Defense buff
+					buff_id = "defense_up"
+					buff_name = "Defense Up"
+					stat_value = int(target.defense * ability.power)
+					buff.initialize({
+						"id": buff_id,
+						"name": buff_name,
+						"duration": duration,
+						"stat_mods": {"defense": stat_value},
 						"source": character
 					})
 				
 				# Add buff to target
 				target.add_status_effect(buff)
 				
-				# Record effect
+				# Record effect with all expected fields
 				var effect = {
 					"type": "buff",
 					"target": target,
-					"buff_id": buff.id,
+					"buff_id": buff_id,
+					"value": stat_value,
 					"duration": duration
 				}
 				result.effects.append(effect)
@@ -212,36 +232,56 @@ static func execute_utility(character, targets: Array, ability: Ability, result:
 				# Apply debuff
 				var debuff = StatusEffect.new()
 				var duration = ability.custom_params.get("duration", 2)
+				var debuff_id = "generic_debuff"
+				var debuff_name = "Debuff"
+				var stat_value = 0
 				
-				if ability.custom_params.has("defense_reduction"):
+				if ability.custom_params.has("defense_reduction") and ability.custom_params.defense_reduction:
 					# Defense debuff
-					var reduction = int(target.defense * ability.power)
+					debuff_id = "defense_down"
+					debuff_name = "Defense Down"
+					stat_value = int(target.defense * ability.power)
 					debuff.initialize({
-						"id": "defense_down",
-						"name": "Defense Down",
+						"id": debuff_id,
+						"name": debuff_name,
 						"duration": duration,
-						"stat_mods": {"defense": -reduction},
+						"stat_mods": {"defense": -stat_value},
 						"source": character
 					})
-				elif ability.custom_params.has("speed_reduction"):
+				elif ability.custom_params.has("speed_reduction") and ability.custom_params.speed_reduction:
 					# Speed debuff
-					var reduction = int(target.speed * ability.power)
+					debuff_id = "speed_down"
+					debuff_name = "Speed Down"
+					stat_value = int(target.speed * ability.power)
 					debuff.initialize({
-						"id": "speed_down",
-						"name": "Speed Down",
+						"id": debuff_id,
+						"name": debuff_name,
 						"duration": duration,
-						"stat_mods": {"speed": -reduction},
+						"stat_mods": {"speed": -stat_value},
+						"source": character
+					})
+				elif ability.custom_params.has("attack_reduction") and ability.custom_params.attack_reduction:
+					# Attack debuff
+					debuff_id = "attack_down"
+					debuff_name = "Attack Down"
+					stat_value = int(target.attack * ability.power)
+					debuff.initialize({
+						"id": debuff_id,
+						"name": debuff_name,
+						"duration": duration,
+						"stat_mods": {"attack": -stat_value},
 						"source": character
 					})
 				
 				# Add debuff to target
 				target.add_status_effect(debuff)
 				
-				# Record effect
+				# Record effect with all expected fields
 				var effect = {
 					"type": "debuff",
 					"target": target,
-					"debuff_id": debuff.id,
+					"debuff_id": debuff_id,
+					"value": stat_value,
 					"duration": duration
 				}
 				result.effects.append(effect)

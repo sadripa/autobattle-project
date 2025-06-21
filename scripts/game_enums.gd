@@ -33,15 +33,73 @@ enum ActionType {
 	UTILITY  # Special effects
 }
 
-# Targeting options
-enum TargetType {
-	SINGLE_ENEMY,    # Target one enemy (usually frontmost)
-	ALL_ENEMIES,     # Target all enemies
-	SINGLE_ALLY,     # Target one ally
-	ALL_ALLIES,      # Target all allies
-	LOWEST_ALLY,     # Target ally with lowest health
-	SELF,            # Target self
-	POSITION_BASED   # Target based on specific position logic
+# NEW: Target Side - which party to target
+enum TargetSide {
+	NONE,              # For special condition abilities
+	ALLIES,            # Player party
+	ENEMIES,           # Enemy party
+	ALLIES_AND_ENEMIES # Both parties
+}
+
+# NEW: Target Range - how to order the target array
+enum TargetRange {
+	NONE,   # For special condition abilities
+	SELF,   # Starts with self, then closest to farthest
+	CLOSE,  # Starts from frontmost (lowest index)
+	MID,    # Starts from middle
+	LONG,   # Starts from backmost (highest index)
+	RANDOM  # Random ordering
+}
+
+# NEW: Target Section - filter based on position relative to first
+enum TargetSection {
+	NONE,   # No section filtering
+	BEFORE, # Only characters before the first in original positions
+	AFTER   # Only characters after the first in original positions
+}
+
+# NEW: Target Size - how many to select
+enum TargetSize {
+	SINGLE,   # First in array
+	DOUBLE,   # First two
+	TRIPLE,   # First three
+	ADJACENT, # Context-dependent (2 if edge, 3 if middle)
+	ALL       # All targets
+}
+
+# NEW: Target Filter - stat-based conditions
+enum TargetFilter {
+	NONE,            # No filtering
+	LOWEST_HP,       # Lowest health percentage
+	HIGHEST_HP,      # Highest health percentage
+	HAS_DEBUFF,      # Has any debuff
+	MISSING_HEALTH,  # Missing > 50% health
+	HAS_ROLE,        # Specific role (defined in custom params)
+	CUSTOM           # Custom filter function
+}
+
+# NEW: Target Priority - preference when multiple valid targets
+enum TargetPriority {
+	NONE,             # No priority
+	PROTECT_VALUABLE, # Prioritize high-tier characters
+	FINISH_WOUNDED,   # Prioritize low HP
+	BREAK_FORMATION   # Prioritize middle positions
+}
+
+# NEW: Fallback Behavior - when no valid targets
+enum Fallback {
+	FAIL,        # Ability doesn't activate
+	RANDOM_VALID, # Pick any valid target
+	SELF,        # Target self instead
+	WAIT         # Skip turn, try again
+}
+
+# NEW: Penetration - how ability affects multiple targets
+enum Penetration {
+	NONE,   # Stops at targets
+	PIERCE, # Continues through
+	CHAIN,  # Jumps to next valid
+	SPLASH  # Affects adjacent after hit
 }
 
 # Effect types
@@ -90,34 +148,93 @@ func string_to_tier(tier_string: String) -> int:
 		"Living Error": return Tier.LIVING_ERROR
 		_: return -1
 
-# Helper functions for string to enum conversion (to add to GameEnums)
+# NEW: Conversion functions for new enums
+func string_to_target_side(side_string: String) -> int:
+	match side_string.to_lower():
+		"none": return TargetSide.NONE
+		"allies": return TargetSide.ALLIES
+		"enemies": return TargetSide.ENEMIES
+		"allies_and_enemies": return TargetSide.ALLIES_AND_ENEMIES
+		_: return TargetSide.ENEMIES
+
+func string_to_target_range(range_string: String) -> int:
+	match range_string.to_lower():
+		"none": return TargetRange.NONE
+		"self": return TargetRange.SELF
+		"close": return TargetRange.CLOSE
+		"mid": return TargetRange.MID
+		"long": return TargetRange.LONG
+		"random": return TargetRange.RANDOM
+		_: return TargetRange.CLOSE
+
+func string_to_target_section(section_string: String) -> int:
+	match section_string.to_lower():
+		"none": return TargetSection.NONE
+		"before": return TargetSection.BEFORE
+		"after": return TargetSection.AFTER
+		_: return TargetSection.NONE
+
+func string_to_target_size(size_string: String) -> int:
+	match size_string.to_lower():
+		"single": return TargetSize.SINGLE
+		"double": return TargetSize.DOUBLE
+		"triple": return TargetSize.TRIPLE
+		"adjacent": return TargetSize.ADJACENT
+		"all": return TargetSize.ALL
+		_: return TargetSize.SINGLE
+
+func string_to_target_filter(filter_string: String) -> int:
+	match filter_string.to_lower():
+		"none": return TargetFilter.NONE
+		"lowest_hp": return TargetFilter.LOWEST_HP
+		"highest_hp": return TargetFilter.HIGHEST_HP
+		"has_debuff": return TargetFilter.HAS_DEBUFF
+		"missing_health": return TargetFilter.MISSING_HEALTH
+		"has_role": return TargetFilter.HAS_ROLE
+		"custom": return TargetFilter.CUSTOM
+		_: return TargetFilter.NONE
+
+func string_to_target_priority(priority_string: String) -> int:
+	match priority_string.to_lower():
+		"none": return TargetPriority.NONE
+		"protect_valuable": return TargetPriority.PROTECT_VALUABLE
+		"finish_wounded": return TargetPriority.FINISH_WOUNDED
+		"break_formation": return TargetPriority.BREAK_FORMATION
+		_: return TargetPriority.NONE
+
+func string_to_fallback(fallback_string: String) -> int:
+	match fallback_string.to_lower():
+		"fail": return Fallback.FAIL
+		"random_valid": return Fallback.RANDOM_VALID
+		"self": return Fallback.SELF
+		"wait": return Fallback.WAIT
+		_: return Fallback.FAIL
+
+func string_to_penetration(penetration_string: String) -> int:
+	match penetration_string.to_lower():
+		"none": return Penetration.NONE
+		"pierce": return Penetration.PIERCE
+		"chain": return Penetration.CHAIN
+		"splash": return Penetration.SPLASH
+		_: return Penetration.NONE
+
+# Helper functions for string to enum conversion
 func string_to_action_type(action_string: String) -> int:
 	match action_string:
-		"attack": return GameEnums.ActionType.ATTACK
-		"defend": return GameEnums.ActionType.DEFEND
-		"support": return GameEnums.ActionType.SUPPORT
-		"utility": return GameEnums.ActionType.UTILITY
-		_: return GameEnums.ActionType.ATTACK  # Default
-
-func string_to_target_type(target_string: String) -> int:
-	match target_string:
-		"single_enemy": return GameEnums.TargetType.SINGLE_ENEMY
-		"all_enemies": return GameEnums.TargetType.ALL_ENEMIES
-		"single_ally": return GameEnums.TargetType.SINGLE_ALLY
-		"all_allies": return GameEnums.TargetType.ALL_ALLIES
-		"lowest_ally": return GameEnums.TargetType.LOWEST_ALLY
-		"self": return GameEnums.TargetType.SELF
-		"position_based": return GameEnums.TargetType.POSITION_BASED
-		_: return GameEnums.TargetType.SINGLE_ENEMY  # Default
+		"attack": return ActionType.ATTACK
+		"defend": return ActionType.DEFEND
+		"support": return ActionType.SUPPORT
+		"utility": return ActionType.UTILITY
+		_: return ActionType.ATTACK  # Default
 
 func string_to_effect_type(effect_string: String) -> int:
 	match effect_string:
-		"damage": return GameEnums.EffectType.DAMAGE
-		"heal": return GameEnums.EffectType.HEAL
-		"buff": return GameEnums.EffectType.BUFF
-		"debuff": return GameEnums.EffectType.DEBUFF
-		"special": return GameEnums.EffectType.SPECIAL
-		_: return GameEnums.EffectType.DAMAGE  # Default
+		"damage": return EffectType.DAMAGE
+		"heal": return EffectType.HEAL
+		"buff": return EffectType.BUFF
+		"debuff": return EffectType.DEBUFF
+		"special": return EffectType.SPECIAL
+		_: return EffectType.DAMAGE  # Default
 
 func action_type_to_string(action_type_enum: int) -> String:
 	match action_type_enum:
@@ -125,17 +242,6 @@ func action_type_to_string(action_type_enum: int) -> String:
 		ActionType.DEFEND: return "defend"
 		ActionType.SUPPORT: return "support"
 		ActionType.UTILITY: return "utility"
-		_: return "unknown"
-
-func target_type_to_string(target_type_enum: int) -> String:
-	match target_type_enum:
-		TargetType.SINGLE_ENEMY: return "single_enemy"
-		TargetType.ALL_ENEMIES: return "all_enemies"
-		TargetType.SINGLE_ALLY: return "single_ally"
-		TargetType.ALL_ALLIES: return "all_allies"
-		TargetType.LOWEST_ALLY: return "lowest_ally"
-		TargetType.SELF: return "self"
-		TargetType.POSITION_BASED: return "position_based"
 		_: return "unknown"
 
 func effect_type_to_string(effect_type_enum: int) -> String:
@@ -146,6 +252,3 @@ func effect_type_to_string(effect_type_enum: int) -> String:
 		EffectType.DEBUFF: return "debuff"
 		EffectType.SPECIAL: return "special"
 		_: return "unknown"
-
-# Similar conversion functions for other enum types
-# (Add as needed)

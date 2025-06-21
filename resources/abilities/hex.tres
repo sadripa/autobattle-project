@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://57ix0531ksqb"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability/ability_data.gd" id="1_b6hse"]
+
+[resource]
+script = ExtResource("1_b6hse")
+id = "hex"
+name = "Hex"
+description = "Curses a middle-positioned enemy with weakness."
+ability_type = 0
+action_type = 3
+effect_type = 3
+target_side = 2
+target_range = 3
+target_section = 0
+target_size = 0
+target_filter = 0
+target_priority = 0
+fallback = 0
+penetration = 0
+power = 0.8
+cooldown = 2
+icon_path = "2"
+effect_animation = ""
+custom_params = {
+"duration": "defense_reduction"
+}

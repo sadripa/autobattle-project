@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://cvmqf0bca50qh"]
+
+[ext_resource type="Resource" uid="uid://dwtj1cy3ntqbc" path="res://resources/abilities/smash.tres" id="1_bjiox"]
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="2_5rtk5"]
+
+[resource]
+script = ExtResource("2_5rtk5")
+id = "berserker"
+name = "Berserker"
+description = "A fierce warrior who grows stronger when wounded."
+role = 0
+tier = 2
+hp = 120
+attack = 22
+defense = 6
+speed = 7
+armor = 10
+shield = 0
+overhealth = 0
+basic_ability = ExtResource("1_bjiox")
+tags = Array[String](["melee", "dps", "rage"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/berserker.png"
+portrait_path = "res://assets/portraits/berserker.png"

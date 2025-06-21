@@ -17,12 +17,17 @@ var turn_count = 0
 # Turn speed
 var turn_duration = 0.8
 
+# Target markers
+var active_markers = []  # Array of active target markers
+
 # Signals
 signal combat_state_changed(new_state)
 signal turn_started(character)
 signal turn_ended(character)
 signal combat_action_performed(action_data)
 signal combat_log_message(message)
+signal targets_marked(targets)
+signal targets_unmarked()
 
 func _ready():
 	# Call initialize after a short delay to ensure parties are ready
@@ -137,10 +142,10 @@ func execute_character_turn(character: Character):
 	
 	# Check for passive ability activation first
 	if character.abilities.passive and character.abilities.passive.can_activate(character, self):
-		result = character.use_ability(GameEnums.AbilityType.PASSIVE, self)
+		result = await character.use_ability(GameEnums.AbilityType.PASSIVE, self)
 	else:
 		# Use basic ability by default
-		result = character.use_ability(GameEnums.AbilityType.BASIC, self)
+		result = await character.use_ability(GameEnums.AbilityType.BASIC, self)
 	
 	# If the result indicates success
 	if result.has("success") and result.success == false:
@@ -161,12 +166,112 @@ func execute_character_turn(character: Character):
 				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gains " + str(effect.value) + " shield")
 			elif effect.type == "overhealth":
 				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gains " + str(effect.value) + " overhealth")
-			elif effect.type == "buff" or effect.type == "debuff":
-				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gained " + effect.buff_id + " for " + str(effect.duration) + " turns")
+			elif effect.type == "buff":
+				var buff_name = effect.get("buff_id", "buff")
+				var duration = effect.get("duration", "?")
+				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gained " + buff_name + " for " + str(duration) + " turns")
+			elif effect.type == "debuff":
+				var debuff_name = effect.get("debuff_id", "debuff")
+				var duration = effect.get("duration", "?")
+				emit_signal("combat_log_message", "  → " + effect.target.char_name + " gained " + debuff_name + " for " + str(duration) + " turns")
+	
+	# Hide target markers after ability execution
+	hide_target_markers()
 	
 	# End turn after a short delay
 	await get_tree().create_timer(turn_duration).timeout
 	end_current_turn()
+
+func show_target_markers(targets: Array):
+	"""
+	Show visual markers on targeted characters
+	"""
+	print("DEBUG: show_target_markers called with ", targets.size(), " targets")
+	
+	# Clear any existing markers first
+	hide_target_markers()
+	
+	# Create markers for each target
+	for target in targets:
+		if target and is_instance_valid(target):
+			print("DEBUG: Creating marker for target: ", target.char_name)
+			var marker = _create_or_get_marker()
+			
+			if marker:
+				# Position marker in global space
+				var marker_global_pos = target.global_position + Vector2(0, 80)
+				
+				print("DEBUG: Target at global pos: ", target.global_position, ", marker at global pos: ", marker_global_pos)
+				
+				# Set global position directly
+				marker.global_position = marker_global_pos
+				marker.z_index = 10  # Ensure it's rendered on top
+				marker.show_marker(_get_marker_color_for_target(target))
+				
+				# Add to active markers list
+				active_markers.append(marker)
+			else:
+				print("ERROR: Failed to create marker!")
+	
+	# Emit signal for any additional UI updates
+	emit_signal("targets_marked", targets)
+
+func hide_target_markers():
+	"""
+	Hide all active target markers
+	"""
+	for marker in active_markers:
+		if marker and is_instance_valid(marker):
+			marker.hide_marker()
+	
+	# Clear the list (markers will be reused)
+	active_markers.clear()
+	
+	# Emit signal
+	emit_signal("targets_unmarked")
+
+func _create_or_get_marker() -> TargetMarker:
+	"""
+	Create a new target marker or get an unused one from pool
+	"""
+	# Look for an existing hidden marker
+	for child in get_children():
+		if child is TargetMarker and not child.visible:
+			print("DEBUG: Reusing existing marker")
+			return child
+	
+	# Create a new marker
+	print("DEBUG: Creating new marker")
+	
+	# Try to load the scene
+	var marker_scene_path = "res://scenes/ui/target_marker.tscn"
+	if not ResourceLoader.exists(marker_scene_path):
+		print("ERROR: Target marker scene not found at: ", marker_scene_path)
+		# Create a fallback marker programmatically
+		var marker = TargetMarker.new()
+		add_child(marker)
+		return marker
+	
+	var marker_scene = load(marker_scene_path)
+	if marker_scene:
+		var marker = marker_scene.instantiate()
+		add_child(marker)
+		print("DEBUG: Marker created and added to combat system")
+		return marker
+	else:
+		print("ERROR: Failed to load marker scene")
+		return null
+
+func _get_marker_color_for_target(target: Character) -> Color:
+	"""
+	Get appropriate marker color based on target type
+	"""
+	if target.party.is_player_party:
+		# Friendly target - green
+		return Color(0.2, 1.0, 0.2, 0.8)
+	else:
+		# Enemy target - red
+		return Color(1.0, 0.2, 0.2, 0.8)
 
 func end_current_turn():
 	"""
@@ -220,6 +325,9 @@ func end_combat():
 	"""
 	Handle end of combat cleanup and transitions
 	"""
+	# Hide any remaining target markers
+	hide_target_markers()
+	
 	# This will be expanded later
 	pass
 

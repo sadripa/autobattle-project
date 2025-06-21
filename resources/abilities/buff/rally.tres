@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3 uid="uid://dick3iprl1wob"]
+
+[ext_resource type="Script" uid="uid://s0ceuq4nfbgl" path="res://scripts/ability/ability_data.gd" id="1_bw7nm"]
+
+[resource]
+script = ExtResource("1_bw7nm")
+id = "rally"
+name = "Rally"
+description = "\"Inspires self and adjacent allies"
+ability_type = 0
+action_type = 0
+effect_type = 0
+target_side = 2
+target_range = 2
+target_section = 0
+target_size = 0
+target_filter = 0
+target_priority = 0
+fallback = 0
+penetration = 0
+power = 0.0
+cooldown = 0
+icon_path = "3"
+effect_animation = ""
+custom_params = {
+"defense_boost": true,
+"duration": ""
+}

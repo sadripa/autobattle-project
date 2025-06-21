@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3 uid="uid://0rvqy3qrivub"]
+
+[ext_resource type="Script" uid="uid://c364v3lty87vl" path="res://scripts/character/character_data.gd" id="1_2agm2"]
+
+[resource]
+script = ExtResource("1_2agm2")
+id = "stone_golem"
+name = "Stone Golem"
+description = "An ancient construct of living stone."
+role = 1
+tier = 3
+hp = 200
+attack = 10
+defense = 20
+speed = 2
+armor = 60
+shield = 0
+overhealth = 0
+tags = Array[String](["melee", "tank", "construct"])
+custom_properties = {}
+sprite_path = "res://assets/sprites/stone_golem.png"
+portrait_path = "res://assets/portraits/stone_golem.png"

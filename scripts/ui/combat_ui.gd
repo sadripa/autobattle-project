@@ -4,6 +4,7 @@ extends CanvasLayer
 @onready var turn_indicator = $TurnIndicator
 @onready var state_label = $StateLabel
 @onready var combat_log = $CombatLog
+@onready var speed_controller = $CombatSpeedController
 
 func _ready():
 	# Get reference to combat system
@@ -13,6 +14,10 @@ func _ready():
 	combat_system.connect("combat_state_changed", Callable(self, "_on_combat_state_changed"))
 	combat_system.connect("turn_started", Callable(self, "_on_turn_started"))
 	combat_system.connect("combat_log_message", Callable(self, "_on_combat_log_message"))
+	
+	# Pass combat system reference to speed controller
+	if speed_controller:
+		speed_controller.combat_system = combat_system
 
 func _on_combat_state_changed(new_state):
 	# Update state label

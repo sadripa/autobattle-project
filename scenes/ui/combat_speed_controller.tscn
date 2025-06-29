@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://bagvgnpr0cscj"]
+
+[ext_resource type="Script" uid="uid://617kghylyp46" path="res://scripts/ui/combat_speed_controller.gd" id="1_speed"]
+[ext_resource type="Texture2D" uid="uid://bv0wjnqyni7x8" path="res://assets/visual/ui/combat speed controller/ui_icon_play.png" id="2_eggk6"]
+[ext_resource type="Texture2D" uid="uid://f8htb5w7ix51" path="res://assets/visual/ui/combat speed controller/ui_icon_stop.png" id="3_tqqe1"]
+[ext_resource type="Texture2D" uid="uid://1tc7fhwpimkg" path="res://assets/visual/ui/combat speed controller/ui_icon_slower.png" id="4_h6wc5"]
+[ext_resource type="Texture2D" uid="uid://b7rcokfq58le1" path="res://assets/visual/ui/combat speed controller/ui_icon_faster.png" id="5_hlpx5"]
+
+[node name="CombatSpeedController" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 60.0
+script = ExtResource("1_speed")
+play_icon = ExtResource("2_eggk6")
+stop_icon = ExtResource("3_tqqe1")
+slower_icon = ExtResource("4_h6wc5")
+faster_icon = ExtResource("5_hlpx5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="PlayStopButton" type="TextureButton" parent="HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SlowerButton" type="TextureButton" parent="HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SpeedLabel" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "1x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FasterButton" type="TextureButton" parent="HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
